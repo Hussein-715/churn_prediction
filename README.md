@@ -13,11 +13,11 @@ This project is part of an ongoing portfolio built alongside Andrew Ng's Machine
 The full exploration lives in `notebooks/churn_eda.ipynb` — every step from raw data to a tuned, explained model, with the reasoning behind each decision written out as it was made. A few highlights:
 
 ### Churn Rate by Contract Type
-![Churn by Contract Type](Images/churn_by_contract.png)
+![Churn by Contract Type](Images/churn_contract.png)
 _The single clearest signal in the data: month-to-month customers churn at a dramatically higher rate than those on a one- or two-year contract — this is the feature every model ends up splitting on first._
 
 ### Class Balance
-![Churn Class Balance](Images/churn_class_balance.png)
+![Churn Class Balance](Images/churn_distribution.png)
 _About 73% of customers don't churn. A model that always predicts "stayed" would already be ~73% accurate while being completely useless — the reason this project evaluates with F1, ROC-AUC and PR-AUC instead of accuracy._
 
 ### Decision Tree Visualization
@@ -29,15 +29,15 @@ _The actual learned tree at a shallow depth, readable question by question — t
 _Which features the tree relied on most, summed across every split — contract type and tenure dominate, consistent with the EDA._
 
 ### Model Comparison — ROC & Precision-Recall Curves
-![ROC and PR Curves — All Models](Images/model_comparison_curves.png)
+![ROC and PR Curves — All Models](Images/roc_and_pr_curves_for_3_models.png)
 _Decision Tree, Random Forest, and XGBoost evaluated on the same held-out test set. XGBoost sits highest on both curves, though the margin over Random Forest is modest._
 
 ### SHAP Global Feature Importance
-![SHAP Summary Plot](Images/shap_summary_plot.png)
+![SHAP Summary Plot](Images/shap_feature_importance.png)
 _Beyond raw importance: this shows **direction**, not just magnitude. Red dots (high tenure) cluster on the left — high tenure consistently pushes predictions *away* from churn, something a plain importance score can't say._
 
 ### SHAP Waterfall — One Customer, Explained
-![SHAP Waterfall Plot](Images/shap_waterfall_plot.png)
+![SHAP Waterfall Plot](Images/waterfall_for_single_customer.png)
 _Why the model flagged its highest-risk test customer: short tenure and a month-to-month contract each push the prediction up, step by step, from the baseline to the final 92.7% churn probability — a number that reconstructs exactly from these contributions._
 
 ---
