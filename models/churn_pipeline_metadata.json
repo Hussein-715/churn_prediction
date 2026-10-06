@@ -1,0 +1,45 @@
+{
+  "saved_at_utc": "2026-10-06T00:14:23.901868+00:00",
+  "model_type": "XGBoost",
+  "best_params": {
+    "classifier__subsample": 0.8,
+    "classifier__scale_pos_weight": 2.768561872909699,
+    "classifier__n_estimators": 100,
+    "classifier__max_depth": 4,
+    "classifier__learning_rate": 0.05,
+    "classifier__colsample_bytree": 0.8
+  },
+  "test_set_metrics": {
+    "Precision (Churn)": 0.522,
+    "Recall (Churn)": 0.805,
+    "F1 (Churn)": 0.633,
+    "ROC-AUC": 0.847,
+    "PR-AUC": 0.665
+  },
+  "model_comparison": {
+    "Decision Tree": {
+      "Precision (Churn)": 0.517,
+      "Recall (Churn)": 0.791,
+      "F1 (Churn)": 0.626,
+      "ROC-AUC": 0.831,
+      "PR-AUC": 0.621
+    },
+    "Random Forest": {
+      "Precision (Churn)": 0.531,
+      "Recall (Churn)": 0.773,
+      "F1 (Churn)": 0.63,
+      "ROC-AUC": 0.841,
+      "PR-AUC": 0.647
+    },
+    "XGBoost": {
+      "Precision (Churn)": 0.522,
+      "Recall (Churn)": 0.805,
+      "F1 (Churn)": 0.633,
+      "ROC-AUC": 0.847,
+      "PR-AUC": 0.665
+    }
+  },
+  "random_state": 42,
+  "sklearn_version": "1.9.1",
+  "python_version": "3.12.8"
+}

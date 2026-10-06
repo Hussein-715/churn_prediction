@@ -1,0 +1,26 @@
+# Data and trained models are intentionally COMMITTED, not ignored.
+# Streamlit Community Cloud only runs app.py — it never runs main.py for
+# you — so the deployed app needs data/*.csv and models/*.joblib already
+# in the repo, or it crashes on load_raw_data() / load_all_models() with
+# a FileNotFoundError. Re-run `python main.py` locally before committing
+# if the models are out of date, then commit the refreshed files.
+
+# Streamlit secrets — not currently used by this app, but never commit
+# this if you add one later (API keys, credentials)
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.idea/

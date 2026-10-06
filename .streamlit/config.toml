@@ -1,0 +1,13 @@
+[theme]
+base = "dark"
+primaryColor = "#6366F1"             # indigo — buttons, active widgets, links, progress bars
+backgroundColor = "#0F172A"          # deep navy-charcoal, not pure black
+secondaryBackgroundColor = "#1E293B" # sidebar, cards, widget backgrounds — one step lighter than the page
+textColor = "#E2E8F0"                # off-white — easier on the eyes than pure white on a dark background
+font = "sans serif"
+
+# Red/orange (high risk) and green (low risk) are applied directly in each
+# page's own code via st.error/st.warning/st.success for risk indicators
+# specifically — kept out of the global theme so they stay meaningful
+# signals rather than decoration used everywhere. Streamlit's built-in
+# alert colors adapt automatically to a dark base.
