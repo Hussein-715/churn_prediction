@@ -20,13 +20,23 @@ _The single clearest signal in the data: month-to-month customers churn at a dra
 ![Churn Class Balance](Images/churn_distribution.png)
 _About 73% of customers don't churn. A model that always predicts "stayed" would already be ~73% accurate while being completely useless — the reason this project evaluates with F1, ROC-AUC and PR-AUC instead of accuracy._
 
+![Churn Internet_Service](Images/churn_internet_service.png)
+
+![Churn Monthly Charges](Images/churn_monthly_charges.png)
+
+![Churn Ternue](Images/churn_ternue.png)
+
+![Confusion Matrix](Images/confusion_matrix.png)
+
 ### Decision Tree Visualization
-![Decision Tree (depth=4)](Images/decision_tree_plot.png)
+![Decision Tree (depth=4)](Images/decision_tree.png)
 _The actual learned tree at a shallow depth, readable question by question — the same information-gain logic implemented by hand in Andrew Ng's lab, here fit by `scikit-learn` in milliseconds._
 
 ### Feature Importance
 ![Feature Importance](Images/feature_importance.png)
 _Which features the tree relied on most, summed across every split — contract type and tenure dominate, consistent with the EDA._
+
+![Random Forest Confusion Matrix](Images/random_forest_confusion_matrix.png)
 
 ### Model Comparison — ROC & Precision-Recall Curves
 ![ROC and PR Curves — All Models](Images/roc_and_pr_curves_for_3_models.png)
@@ -36,8 +46,12 @@ _Decision Tree, Random Forest, and XGBoost evaluated on the same held-out test s
 ![SHAP Summary Plot](Images/shap_feature_importance.png)
 _Beyond raw importance: this shows **direction**, not just magnitude. Red dots (high tenure) cluster on the left — high tenure consistently pushes predictions *away* from churn, something a plain importance score can't say._
 
+![SHAP_Values](Images/shap_values_impact_on_model.png)
+
+![Tunned_Decision_Tree](Images/tunned_decision_tree.png)
+
 ### SHAP Waterfall — One Customer, Explained
-![SHAP Waterfall Plot](Images/waterfall_for_single_customer.png)
+![SHAP Waterfall Plot](Images/watefall_for_single_customer.png)
 _Why the model flagged its highest-risk test customer: short tenure and a month-to-month contract each push the prediction up, step by step, from the baseline to the final 92.7% churn probability — a number that reconstructs exactly from these contributions._
 
 ---
@@ -74,7 +88,6 @@ churn_prediction/
 │   └── test_data.py               # pytest for the cleaning logic
 ├── main.py                        # runs the full training pipeline end to end
 ├── requirements.txt
-├── LICENSE
 └── README.md
 ```
 
@@ -169,6 +182,4 @@ XGBoost was selected: best on every metric, not just one. These numbers aren't s
 - A dedicated Customer Insights / EDA page in the app, with interactive Plotly charts
 - A downloadable PDF prediction report (CSV export already supported)
 
-## License
-
-MIT — see [LICENSE](LICENSE).
+ 
