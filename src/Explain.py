@@ -29,6 +29,20 @@ def build_explainer(pipeline: Pipeline, X: pd.DataFrame):
 
     explainer = shap.TreeExplainer(classifier)
     shap_values = explainer(X_enc)
+
+    # scikit-learn classifiers (Decision Tree, Random Forest) expose a
+    # 2-column predict_proba, and TreeExplainer mirrors that with one set
+    # of SHAP values PER CLASS: shape (n_samples, n_features, n_classes).
+    # XGBoost's binary:logistic objective has a single internal output,
+    # so its SHAP values come back as (n_samples, n_features) with no
+    # class dimension at all. Keep only the churn (class 1) slice when a
+    # class dimension exists, so every caller downstream — the waterfall
+    # plot, the summary plot, the reconstruction check — can treat all
+    # three model types identically and never needs to know this quirk
+    # exists.
+    if shap_values.values.ndim == 3:
+        shap_values = shap_values[:, :, 1]
+
     shap_values.feature_names = list(feature_names)
 
     return shap_values, X_enc, feature_names
