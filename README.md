@@ -1,6 +1,9 @@
 # Telco Customer Churn — Decision Trees, Random Forest & XGBoost
 
-**🚀 Live Demo:** _[link coming after deployment]_
+**🚀 Live Demo:** [https://churnprediction-cdjw6geurhn4exmucehyzs.streamlit.app/](https://churnprediction-cdjw6geurhn4exmucehyzs.streamlit.app/)
+
+![streamlit_demo_GIF](streamlit_demo.gif)
+_The app in action: a live prediction with its SHAP explanation, then switching models on the Compare Models page._
 
 Predicts which telecom customers are likely to churn (cancel their service), explains *why* the model thinks so for any individual customer, and ships as an interactive app — not just a notebook.
 
@@ -20,13 +23,21 @@ _The single clearest signal in the data: month-to-month customers churn at a dra
 ![Churn Class Balance](Images/churn_distribution.png)
 _About 73% of customers don't churn. A model that always predicts "stayed" would already be ~73% accurate while being completely useless — the reason this project evaluates with F1, ROC-AUC and PR-AUC instead of accuracy._
 
+### Churn Rate by Internet Service
 ![Churn Internet_Service](Images/churn_internet_service.png)
+_Fiber optic customers churn noticeably more than DSL or no-internet customers — a second strong categorical signal alongside contract type, and one of the splits the tuned trees rely on._
 
+### Monthly Charges by Churn
 ![Churn Monthly Charges](Images/churn_monthly_charges.png)
+_Churned customers skew toward higher monthly bills. On its own this is a weaker signal than tenure or contract type, but it compounds with them — high charges on a month-to-month contract is a notably risky combination._
 
-![Churn Ternue](Images/churn_ternue.png)
+### Tenure by Churn
+![Churn Tenure](Images/churn_ternue.png)
+_Churn is heavily concentrated in a customer's first few months, then drops off sharply the longer they stay — the pattern behind the What-If page's tenure slider in the app._
 
+### Confusion Matrix — Baseline Decision Tree
 ![Confusion Matrix](Images/confusion_matrix.png)
+_The first tree fit in the notebook (`max_depth=4`, no class weighting), before any tuning. It catches relatively few actual churners — the motivating evidence for prioritizing recall and adding `class_weight="balanced"` in every model that follows._
 
 ### Decision Tree Visualization
 ![Decision Tree (depth=4)](Images/decision_tree.png)
@@ -36,19 +47,21 @@ _The actual learned tree at a shallow depth, readable question by question — t
 ![Feature Importance](Images/feature_importance.png)
 _Which features the tree relied on most, summed across every split — contract type and tenure dominate, consistent with the EDA._
 
-![Random Forest Confusion Matrix](Images/random_forest_confusion_matrix.png)
-
 ### Model Comparison — ROC & Precision-Recall Curves
 ![ROC and PR Curves — All Models](Images/roc_and_pr_curves_for_3_models.png)
 _Decision Tree, Random Forest, and XGBoost evaluated on the same held-out test set. XGBoost sits highest on both curves, though the margin over Random Forest is modest._
 
 ### SHAP Global Feature Importance
-![SHAP Summary Plot](Images/shap_feature_importance.png)
-_Beyond raw importance: this shows **direction**, not just magnitude. Red dots (high tenure) cluster on the left — high tenure consistently pushes predictions *away* from churn, something a plain importance score can't say._
+![SHAP Feature Importance](Images/shap_feature_importance.png)
+_Mean absolute SHAP value per feature — a magnitude-only ranking, the SHAP-based counterpart to the feature importance chart above. Contract type and tenure lead here too, but this time computed from actual per-customer contributions rather than impurity reduction._
 
-![SHAP_Values](Images/shap_values_impact_on_model.png)
+### SHAP Summary Plot (Beeswarm)
+![SHAP Values Impact on Model](Images/shap_values_impact_on_model.png)
+_Beyond raw importance: this shows **direction**, not just magnitude. Each dot is one customer; color is that feature's value. Red dots (high tenure) cluster on the left — high tenure consistently pushes predictions *away* from churn, something the bar chart above can't say on its own._
 
-![Tunned_Decision_Tree](Images/tunned_decision_tree.png)
+### Tuned Decision Tree
+![Tuned Decision Tree](Images/tunned_decision_tree.png)
+_The tree after hyperparameter tuning (`max_depth=10, min_samples_leaf=50, class_weight="balanced"`) — far deeper and harder to read at a glance than the depth-4 tree above, but this is the version that actually went into the model comparison, trading interpretability for the recall this project prioritized._
 
 ### SHAP Waterfall — One Customer, Explained
 ![SHAP Waterfall Plot](Images/watefall_for_single_customer.png)
@@ -88,6 +101,7 @@ churn_prediction/
 │   └── test_data.py               # pytest for the cleaning logic
 ├── main.py                        # runs the full training pipeline end to end
 ├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
@@ -152,7 +166,7 @@ Four pages, each reusing the same `src/` modules the notebook and `main.py` alre
 - **📂 Batch Upload.** Upload a CSV of many customers (a downloadable template is provided) and get a full risk leaderboard, sorted highest-risk-first, with friendly error handling for missing columns or malformed files instead of a raw traceback.
 - **📊 Compare Models.** Live metrics — not cached numbers from a file — recomputed from the saved models against the same test split used throughout. Selecting a model updates its confusion matrix and its *actual* hyperparameters, read directly off the fitted pipeline via `get_params()` rather than retyped by hand, so they can never drift out of sync with what's really running.
 
-**Engineering details worth noting:** model and data loading are wrapped in `st.cache_resource` / `st.cache_data` so nothing reloads from disk on every widget interaction; every page fails gracefully with a clear message (rather than a traceback) if `main.py` hasn't been run yet; the two matplotlib-producing functions in `evaluate.py` and `explain.py` return `Figure` objects instead of calling `plt.show()`, so the exact same functions work in a console and in `st.pyplot()`.
+**Engineering details worth noting:** model and data loading are wrapped in `st.cache_resource` / `st.cache_data` so nothing reloads from disk on every widget interaction; every page fails gracefully with a clear message (rather than a traceback) if `main.py` hasn't been run yet; the two matplotlib-producing functions in `evaluate.py` and `explain.py` return `Figure` objects instead of calling `plt.show()`, so the exact same functions work in a console and in `st.pyplot()`; SHAP's shape difference between scikit-learn classifiers (one set of values per class) and XGBoost's binary objective (a single output) is normalized in one place, so every page treats all three models identically.
 
 ---
 
@@ -182,4 +196,6 @@ XGBoost was selected: best on every metric, not just one. These numbers aren't s
 - A dedicated Customer Insights / EDA page in the app, with interactive Plotly charts
 - A downloadable PDF prediction report (CSV export already supported)
 
- 
+## License
+
+MIT — see [LICENSE](LICENSE).
