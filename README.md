@@ -2,7 +2,7 @@
 
 **🚀 Live Demo:** [https://churnprediction-cdjw6geurhn4exmucehyzs.streamlit.app/](https://churnprediction-cdjw6geurhn4exmucehyzs.streamlit.app/)
 
-![streamlit_demo_GIF](streamlit_demo.gif)
+![streamlit_demo_GIF](Images/streamlit_demo.gif)
 _The app in action: a live prediction with its SHAP explanation, then switching models on the Compare Models page._
 
 Predicts which telecom customers are likely to churn (cancel their service), explains *why* the model thinks so for any individual customer, and ships as an interactive app — not just a notebook.
@@ -196,6 +196,3 @@ XGBoost was selected: best on every metric, not just one. These numbers aren't s
 - A dedicated Customer Insights / EDA page in the app, with interactive Plotly charts
 - A downloadable PDF prediction report (CSV export already supported)
 
-## License
-
-MIT — see [LICENSE](LICENSE).
